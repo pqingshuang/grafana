@@ -167,7 +167,6 @@ func validateRuleGroup(
 	uids := make(map[string]int, cap(result))
 	for idx := range ruleGroupConfig.Rules {
 		rule, err := validateRuleNode(&ruleGroupConfig.Rules[idx], ruleGroupConfig.Name, interval, orgId, namespace, conditionValidator, cfg)
-		rule.RuleGroupIndex = idx
 		// TODO do not stop on the first failure but return all failures
 		if err != nil {
 			return nil, fmt.Errorf("invalid rule specification at index [%d]: %w", idx, err)
@@ -178,6 +177,7 @@ func validateRuleGroup(
 			}
 			uids[rule.UID] = idx
 		}
+		rule.RuleGroupIndex = idx
 		result = append(result, rule)
 	}
 	return result, nil
